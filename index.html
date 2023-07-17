@@ -15,9 +15,9 @@
   
   <script>
 let mic;
-
+let button;
 function setup() {
-  createCanvas(710, 200);
+  createCanvas(710, 600);
 
   // Create an Audio input
   mic = new p5.AudioIn();
@@ -25,20 +25,38 @@ function setup() {
   // start the Audio Input.
   // By default, it does not .connect() (to the computer speakers)
   mic.start();
+  
+     button = createButton('start');
+  button.position(0, 0);
+  button.mousePressed(mp);
 }
 
 function draw() {
   background(200);
 
-  // Get the overall volume (between 0 and 1.0)
-  let vol = mic.getLevel();
-  fill(127);
+//   // Get the overall volume (between 0 and 1.0)
+   let vol = mic.getLevel();
+   fill(127);
   stroke(3);
 
-  // Draw an ellipse with height based on volume
-  let h = map(vol, 0, 1, height, 0);
-  ellipse(width / 2, h - 25, 50, 50);
+//   // Draw an ellipse with height based on volume
+   let h = map(vol, 0, 1, height, 0);
+   ellipse(width / 2, h - 25, 50, 50);
 }
+
+// function setup() {
+//   createCanvas(100, 100);
+//   background(0);
+//   button = createButton('start');
+//   button.position(0, 0);
+//   button.mousePressed(mp);
+// }
+
+ function mp(){
+   console.log("hhh")
+
+ }
 </script>
+<input type="button" height="10" width="30">start</button>
 </body>
 </html>
