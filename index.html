@@ -8,6 +8,9 @@
   <!-- <script src="sketch.js"></script> -->
 <!-- 
     </script> -->
+    <style>   
+</style>
+   
 </head>
 <body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js" integrity="sha512-bcfltY+lNLlNxz38yBBm/HLaUB1gTV6I0e+fahbF9pS6roIdzUytozWdnFV8ZnM6cSAG5EbmO0ag0a/fLZSG4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -17,7 +20,8 @@
 let mic;
 
 function setup() {
-  createCanvas(710, 500);
+ 
+  createCanvas(windowWidth, windowHeight);
   shapeColor = color(random(255), random(255), random(255), 170 );
 
   // Create an Audio input
