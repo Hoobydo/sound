@@ -42,7 +42,7 @@ function draw() {
 
   // Draw an ellipse with height based on volume
   let h = map(vol, 0, 1, 0, height);
-  ellipse(width / 2, 100, h+20, h+20);
+  ellipse(width / 2, height/2, h+20, h+20);
 
   if (getAudioContext().state !== 'running') {
      text(' ', width/2, height/2);
