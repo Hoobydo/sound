@@ -18,6 +18,7 @@ let mic;
 
 function setup() {
   createCanvas(710, 500);
+  shapeColor = color(random(255), random(255), random(255), 170 );
 
   // Create an Audio input
   mic = new p5.AudioIn();
@@ -28,16 +29,16 @@ function setup() {
 }
 
 function draw() {
-  background(200);
+  background(0);
 
   // Get the overall volume (between 0 and 1.0)
   let vol = mic.getLevel();
-  fill(127);
+  fill(shapeColor);
   stroke(0);
 
   // Draw an ellipse with height based on volume
-  let h = map(vol, 0, 1, height, 0);
-  ellipse(width / 2, h - 25, 50, 50);
+  let h = map(vol, 0, 1, 0, height);
+  ellipse(width / 2, 100, h+20, h+20);
 
   if (getAudioContext().state !== 'running') {
      text('click to start audio', width/2, height/2);
@@ -54,6 +55,6 @@ function draw() {
    synth.play('A4', 0.5, 0, 0.2);
  }
 </script>
-<input type="button" value="test"  >
+<!-- <input type="button" value="test"  > -->
 </body>
 </html>
