@@ -41,9 +41,9 @@ function draw() {
   ellipse(width / 2, 100, h+20, h+20);
 
   if (getAudioContext().state !== 'running') {
-     text('click to start audio', width/2, height/2);
+     text(' ', width/2, height/2);
    } else {
-     text('audio is enabled', width/2, height/2);
+     text('', width/2, height/2);
    }
 }
 
