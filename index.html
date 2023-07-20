@@ -15,15 +15,17 @@
 <body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js" integrity="sha512-bcfltY+lNLlNxz38yBBm/HLaUB1gTV6I0e+fahbF9pS6roIdzUytozWdnFV8ZnM6cSAG5EbmO0ag0a/fLZSG4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.sound.min.js" integrity="sha512-WzkwpdWEMAY/W8WvP9KS2/VI6zkgejR4/KTxTl4qHx0utqeyVE0JY+S1DlMuxDChC7x0oXtk/ESji6a0lP/Tdg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js" integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ==" crossorigin="anonymous" defer></script>
   <script>
 let mic;
-
+let d;
+let sampleIsPlaying = false;
 function setup() {
  
   createCanvas(windowWidth, windowHeight);
   shapeColor = color(random(255), random(255), random(255), 170 );
-
+  shapeColorr = color(random(255), random(255), random(255), 170 );
+ d=20;
   // Create an Audio input
   mic = new p5.AudioIn();
 
@@ -36,19 +38,26 @@ function draw() {
   background(0);
 
   // Get the overall volume (between 0 and 1.0)
-  let vol = mic.getLevel();
-  fill(shapeColor);
+  let vol = mic.getLevel()*1000;
+  
   stroke(0);
-
+  console.log(d,vol);
+if (vol > d) {
+  d = vol;
+  
+}
   // Draw an ellipse with height based on volume
   let h = map(vol, 0, 1, 0, height);
-  ellipse(width / 2, height/2, h+20, h+20);
-
+  fill(shapeColor);
+  ellipse(width / 1.5, height/2, d, d);
+  fill(shapeColorr);
+  ellipse(width / 3, height/2, d, d);
   if (getAudioContext().state !== 'running') {
      text(' ', width/2, height/2);
    } else {
      text('', width/2, height/2);
    }
+
 }
 
  function touchStarted() {
@@ -58,6 +67,9 @@ function draw() {
    var synth = new p5.MonoSynth();
    synth.play('A4', 0.5, 0, 0.2);
  }
+
+
+
 </script>
 <!-- <input type="button" value="test"  > -->
 </body>
