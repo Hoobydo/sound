@@ -18,20 +18,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js" integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ==" crossorigin="anonymous" defer></script>
   <script>
 let mic;
+var volHistory=[];
 let d;
 let sampleIsPlaying = false;
+let button, fft;
 function setup() {
  
   createCanvas(windowWidth, windowHeight);
+  angleMode(DEGREES); // Change the mode to DEGREES
   shapeColor = color(random(255), random(255), random(255), 170 );
   shapeColorr = color(random(255), random(255), random(255), 170 );
  d=20;
+//  button= createButton('b');
+//  button.position(width/2, height/2);
+// button.mousePressed();
+function changeBG() {
+  let val = random(255);
+  background(val);
+}
   // Create an Audio input
   mic = new p5.AudioIn();
 
   // start the Audio Input.
   // By default, it does not .connect() (to the computer speakers)
   mic.start();
+  fft = new p5.FFT(0.9, 128);
+  fft.setInput(mic);
 }
 
 function draw() {
@@ -39,26 +51,60 @@ function draw() {
 
   // Get the overall volume (between 0 and 1.0)
   let vol = mic.getLevel()*1000;
+  let spectrum = fft.analyze();
+  const sum = spectrum.reduce((a, b) => a + b, 0);
+  const avg = (sum / spectrum.length) || 0; 
+
+ volHistory.push(vol);
+
+  translate(width/2, height/2)
+  noFill();
+  beginShape();
+  for (let i = 0; i < 360; i++) {
+    stroke(255);
+    let r = map(volHistory[i], 0, 1, 10, 30);
+    let x = r * cos(i);
+    let y = r * sin(i);
+    vertex(x, y);
+  }
+  endShape();
+
+  if(volHistory.length > 360) {
+    volHistory.splice(0,1);
+  }
   
+//   ellipse(30, 30, vol, vol);
+  console.log(vol)
+
+
   stroke(0);
   console.log(d,vol);
 if (vol > d) {
   d = vol;
-  
 }
   // Draw an ellipse with height based on volume
   let h = map(vol, 0, 1, 0, height);
   fill(shapeColor);
-  ellipse(width / 1.5, height/2, d, d);
-  fill(shapeColorr);
-  ellipse(width / 3, height/2, d, d);
+  ellipse(0, 0, d, avg);
+
+// //   console.log(spectrum);
+//   for (let i = 0; i < spectrum.length; i++) {
+//     // stroke(100);
+//     // fill(shapeColor);
+//     // let amp = spectrum[i];
+//     //  let y = map(amp, 0, 255, height, 0);
+//     // ellipse(i, y, 20, vol);
+//   }
+  
   if (getAudioContext().state !== 'running') {
      text(' ', width/2, height/2);
    } else {
      text('', width/2, height/2);
    }
-
 }
+
+
+
 
  function touchStarted() {
    if (getAudioContext().state !== 'running') {
